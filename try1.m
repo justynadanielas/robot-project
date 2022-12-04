@@ -1,0 +1,1 @@
+plot_given_r_c(7, 20)
