@@ -3,21 +3,28 @@ function C = plot_given_r_c(row_num, col_num)
 %   row_num is a number in range [6;15]
 %   col_num is a number in range [14;31]
 
+% import danych z plików load
 hex_load = import_data_load_func(row_num, col_num);
 robotic_skin_load = import_data_robotic_skin_load_func(row_num, col_num);
 columnFz = hex_load{1}.data(:,7);
 
 % z której kolumny bierzemy dane
-% trzeba stworzyć modyfikującą się nazwę zmiennej 
-% czy taki sposób jest dobry?
-% musi zmieniać się też wartość w data(), dla r = 6 i col = 14 jest 209
+% ustalenie rozmiaru szuaknej kolumny
+% robotic_skin_load to struct zawierający dane z pliku robotic_skin
 size_of_robotic_skin = size(robotic_skin_load{1}.colheaders);
+
+% na tej podstawie tworzę wektor odpowiadającej długości 
 colsnum = (1:size_of_robotic_skin(2));
+
+% mapowanie (kluczami są char, a wartościami double) 
 mapping = containers.Map(robotic_skin_load{1}.colheaders, colsnum);
-% tutaj trzeba dać fsprinta z row i col
+
+% tworzę zmienną przechowującą nazwę sensora
 format_spec = 'row_%d_col_%d';
-sensor_name = sprintf(format_spec,row_num,col_num)
-robotic_skin_col = mapping(sensor_name)
+sensor_name = sprintf(format_spec,row_num,col_num);
+% na podstawie tego klucza odczytuję numer odpowiedniej kolumny sensora
+robotic_skin_col = mapping(sensor_name);
+% U jest typu cell, zapisuję tam dane z danej kolumny (wartości napięcia)
 U{row_num}{col_num} = robotic_skin_load{1}.data(:,robotic_skin_col);
 
 % pierwszy punkt na wykresie
@@ -56,8 +63,6 @@ values = [values1, values2];
 size(values1)
 size(values2)
 
-% figure(2)
-% scatter((1:1538), values)
 
 % indeksowanie służy naprawieniu problemu z różną liczbą wierszy w pliku
 % robotic_skin
