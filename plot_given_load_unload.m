@@ -10,6 +10,10 @@ f = figure('visible','off');
 plot(x(1:1535)', flip(U_load{row_num}{col_num}(1:1535))); 
 hold on
 plot(x(1:1535)', U_unload{row_num}{col_num}(1:1535));
+xlim([0 inf]) 
+xlabel('Fz')
+ylabel('U')
+legend('load','unload', 'Location', 'NorthWest')
 
 format_spec = 'row_%d_col_%d_load_unload';
 plot_name = sprintf(format_spec,row_num,col_num);
