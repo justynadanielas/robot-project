@@ -6,7 +6,10 @@ function U_load = plot_given_r_c(row_num, col_num)
 % import danych z plików load
 hex_load = import_data_load_func(row_num, col_num);
 robotic_skin_load = import_data_robotic_skin_load_func(row_num, col_num);
-columnFz = hex_load{1}.data(:,7);
+
+% trzeba odwrócić wartości siły 
+columnFz_negative = hex_load{1}.data(:,7);
+columnFz = columnFz_negative*(-1);
 
 % z której kolumny bierzemy dane
 % ustalenie rozmiaru szuaknej kolumny
@@ -69,8 +72,11 @@ size(values2);
 % indeksowanie służy naprawieniu problemu z różną liczbą wierszy w pliku
 % robotic_skin
 % f = figure('visible','off');
-% scatter(values(1:1535)', U{row_num}{col_num}(1:1535)); 
-% format_spec = 'row_%d_col_%d';
+% plot(values(1:1535)', U_load{row_num}{col_num}(1:1535)); 
+% xlim([0 inf]) 
+% xlabel('Fz')
+% ylabel('U')
+% format_spec = 'row_%d_col_%d_load';
 % plot_name = sprintf(format_spec,row_num,col_num);
 % title(plot_name, 'Interpreter', 'none')
 % saveas(f,plot_name,'png');
