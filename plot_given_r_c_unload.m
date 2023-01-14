@@ -6,7 +6,8 @@ function [U_unload, values] = plot_given_r_c_unload(row_num, col_num)
 % import danych z plików load
 hex_unload = import_data_hex_unload(row_num, col_num);
 robotic_skin_unload = import_data_robotic_skin_unload(row_num, col_num);
-columnFz = hex_unload{1}.data(:,7);
+columnFz_negative = hex_unload{1}.data(:,7);
+columnFz = columnFz_negative*(-1);
 
 % z której kolumny bierzemy dane
 % ustalenie rozmiaru szukanej kolumny
@@ -77,12 +78,15 @@ values = [values1, values2];
 
 % indeksowanie służy naprawieniu problemu z różną liczbą wierszy w pliku
 % robotic_skin
-f = figure('visible','off');
-plot(values(1:1535)', U_unload{row_num}{col_num}(1:1535)); 
-format_spec = 'row_%d_col_%d_unload';
-plot_name = sprintf(format_spec,row_num,col_num);
-title(plot_name, 'Interpreter', 'none')
-saveas(f,plot_name,'png');
+% f = figure('visible','off');
+% plot(values(1:1535)', U_unload{row_num}{col_num}(1:1535)); 
+% xlim([0 inf]) 
+% xlabel('Fz')
+% ylabel('U')
+% format_spec = 'row_%d_col_%d_unload';
+% plot_name = sprintf(format_spec,row_num,col_num);
+% title(plot_name, 'Interpreter', 'none')
+% saveas(f,plot_name,'png');
 
 end
 
