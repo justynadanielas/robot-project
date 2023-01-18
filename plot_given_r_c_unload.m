@@ -30,56 +30,17 @@ robotic_skin_col = mapping(sensor_name);
 % U jest typu cell, zapisuję tam dane z danej kolumny (wartości napięcia)
 U_unload{row_num}{col_num} = robotic_skin_unload{1}.data(:,robotic_skin_col);
 
-% pierwszy punkt na wykresie
-x1 = 1;
-y1 = columnFz(x1);
-% kolanko na wykresie
-xk = 220;
-yk = columnFz(xk);
-% ostatni punkt na wykresie
-xe = length(columnFz);
-ye = columnFz(xe);
+% ta metoda wydaje się bardziej naukowa
+% values = resample(columnFz, 1535, length(columnFz));
 
-% pierwsza funkcja liniowa
-coefficients = polyfit([x1, xk], [y1, yk], 1);
-a1 = coefficients (1);
-b1 = coefficients (2);
-
-% druga funkcja liniowa
-coefficients = polyfit([xk, xe], [yk, ye], 1);
-a2 = coefficients (1);
-b2 = coefficients (2);
-
-% współczynnik przeskalowania
-k = length(U_unload{row_num}{col_num})/length(columnFz);
-
-% obliczenie wartości dla współczynników funkcji liniowej o poszerzonej
-% dziedzinie
-new_a1 = a1*(1/k);
-new_a2 = a2*(1/k);
-new_xk = xk*k;
-new_b1 = b1;
-new_b2 = b2;
-new_xe = xe*k;
-
-% wektor wartości od 1 do 952
-vec1 = (1:new_xk-1);
-
-% wektor wartości od  953 do 1538
-vec2 = (new_xk:new_xe);
-
-% wzór nowych funkcji liniowych
-values1 = new_a1*vec1+new_b1;
-values2 = new_a2*vec2+new_b2;
-
-% połączenie tych dwóch funkcji w jedno
-% zmieniam 'values' na return funkcji
-values = [values1, values2];
+% ta metoda daje wykresy bardziej przypominające poprzednia
+Fz_max = max(columnFz);
+values = linspace(0, Fz_max, 1533);
 
 % indeksowanie służy naprawieniu problemu z różną liczbą wierszy w pliku
 % robotic_skin
 % f = figure('visible','off');
-% plot(values(1:1535)', U_unload{row_num}{col_num}(1:1535)); 
+% plot(values(1:1533)', U_unload{row_num}{col_num}(1:1533)); 
 % xlim([0 inf]) 
 % xlabel('Fz')
 % ylabel('U')

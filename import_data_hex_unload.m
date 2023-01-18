@@ -8,6 +8,6 @@ function E = import_data_hex_unload(r, c)
     format_spec = 'sensor_row_%d_col_%d_hex_unload.dat';
     file_name = sprintf(format_spec,r,c);
     delimiterIn = '\t';
-    E{i} = importdata(file_name,delimiterIn)
+    E{i} = importdata(file_name,delimiterIn);
 end
 

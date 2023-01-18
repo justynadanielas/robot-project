@@ -30,49 +30,17 @@ robotic_skin_col = mapping(sensor_name);
 % U jest typu cell, zapisuję tam dane z danej kolumny (wartości napięcia)
 U_load{row_num}{col_num} = robotic_skin_load{1}.data(:,robotic_skin_col);
 
-% pierwszy punkt na wykresie
-x1 = 1;
-y1 = columnFz(x1);
-% kolanko na wykresie
-xk = 220;
-yk = columnFz(xk);
-% ostatni punkt na wykresie
-xe = length(columnFz);
-ye = columnFz(xe);
+% ta metoda wydaje się bardziej naukowa
+% values = resample(columnFz, 1535, length(columnFz));
 
-% pierwsza funkcja liniowa
-coefficients = polyfit([x1, xk], [y1, yk], 1);
-a1 = coefficients (1);
-b1 = coefficients (2);
-
-% druga funkcja liniowa
-coefficients = polyfit([xk, xe], [yk, ye], 1);
-a2 = coefficients (1);
-b2 = coefficients (2);
-
-% współczynnik przeskalowania
-k = length(U_load{row_num}{col_num})/length(columnFz);
-new_a1 = a1*(1/k);
-new_a2 = a2*(1/k);
-new_xk = xk*k;
-new_b1 = b1;
-new_b2 = b2;
-new_xe = xe*k;
-vec1 = (1:new_xk-1);
-vec2 = (new_xk:new_xe);
-values1 = new_a1*vec1+new_b1;
-values2 = new_a2*vec2+new_b2;
-
-% zmieniam 'values' na return funkcji
-values = [values1, values2];
-size(values1);
-size(values2);
-
+% ta metoda daje wykresy bardziej przypominające poprzednie
+Fz_max = max(columnFz);
+values = linspace(0, Fz_max, 1533);
 
 % indeksowanie służy naprawieniu problemu z różną liczbą wierszy w pliku
 % robotic_skin
 % f = figure('visible','off');
-% plot(values(1:1535)', U_load{row_num}{col_num}(1:1535)); 
+% plot(values(1:1533)', U_load{row_num}{col_num}(1:1533)); 
 % xlim([0 inf]) 
 % xlabel('Fz')
 % ylabel('U')
